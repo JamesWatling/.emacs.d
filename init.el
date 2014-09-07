@@ -60,6 +60,7 @@ by Prelude.")
 (defvar prelude-modules-file (expand-file-name "prelude-modules.el" prelude-dir)
   "This files contains a list of modules that will be loaded by Prelude.")
 
+
 (unless (file-exists-p prelude-savefile-dir)
   (make-directory prelude-savefile-dir))
 
@@ -112,5 +113,31 @@ by Prelude.")
 (prelude-eval-after-init
  ;; greet the use with some useful tip
  (run-at-time 5 nil 'prelude-tip-of-the-day))
+
+(setenv "PATH" (concat (getenv "PATH") ":/bin"))
+(setq exec-path (append exec-path '("/bin")))
+
+(require 'tree-mode)
+(require 'windata)
+(require 'dirtree)
+(autoload 'dirtree "dirtree" "Add directory to tree view" t)
+(global-set-key "\C-o" 'dirtree-show)
+
+;; Replace $RSENSE_HOME with the directory where RSense was installed in full path
+;; ;; Example for UNIX-like systems
+;; ;; (setq rsense-home "/home/tomo/opt/rsense-0.2")
+;; ;; or
+;; ;; (setq rsense-home (expand-file-name "~/opt/rsense-0.2"))
+;; ;; Example for Windows
+;; ;; (setq rsense-home "C:\\rsense-0.2")
+ (setq rsense-home "$RSENSE_HOME")
+ (add-to-list 'load-path (concat rsense-home "/etc"))
+ (require 'rsense)
+(require 'evil)
+(evil-mode 1)
+
+(setq evil-shift-width 2)
+(require 'evil-surround)
+(global-evil-surround-mode 1)
 
 ;;; init.el ends here
